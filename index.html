@@ -6,7 +6,7 @@
 <title>SourceFix — WordPress accessibility, fixed at publish time</title>
 <meta name="description" content="SourceFix checks every WordPress post and page when you publish it, writes the alt text, link text, and headings, and lets you approve each fix before it goes live.">
 <style>
-  :root { --ink:#1d2733; --muted:#5a6673; --accent:#2b4acb; --bg:#fbfaf7; --card:#ffffff; --line:#e5e1d8; }
+  :root { --ink:#1d2733; --muted:#5a6673; --accent:#2b4acb; --bg:#fbfaf7; --card:#ffffff; --line:#e5e1d8; --good:#0d7a4a; --goodbg:#eaf5ee; }
   * { box-sizing:border-box; margin:0; padding:0; }
   body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.65; }
   a { color:var(--accent); text-decoration:none; }
@@ -21,18 +21,40 @@
   .hero { padding:72px 0 48px; }
   .hero h1 { font-family:Georgia,"Times New Roman",serif; font-size:46px; line-height:1.15; letter-spacing:-.01em; font-weight:700; max-width:640px; }
   .hero p { font-size:18px; color:var(--muted); max-width:600px; margin:20px 0 28px; }
-  .btn { display:inline-block; background:var(--accent); color:#fff; font-weight:600; padding:12px 24px; border-radius:6px; font-size:16px; }
+  .btn { display:inline-block; background:var(--accent); color:#fff; font-weight:600; padding:12px 24px; border-radius:6px; font-size:16px; border:0; cursor:pointer; }
   .btn:hover { background:#223da8; text-decoration:none; }
   .btn-outline { background:transparent; color:var(--ink); border:1px solid #c9c4b8; margin-left:10px; }
   .btn-outline:hover { background:#f0ede6; }
-  .example { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:22px 24px; margin:8px 0 48px; }
-  .example .label { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:10px; }
-  .example p { font-size:15px; color:var(--muted); }
-  .example p strong { color:var(--ink); }
-  .example .fix { background:#eef2fd; border-radius:6px; padding:12px 14px; margin-top:12px; font-size:15px; }
+  .btn:disabled { background:#9aa8bd; cursor:default; }
   section { padding:40px 0; border-top:1px solid var(--line); }
   section h2 { font-family:Georgia,"Times New Roman",serif; font-size:28px; letter-spacing:-.01em; margin-bottom:10px; }
   section .intro { color:var(--muted); font-size:16px; max-width:620px; margin-bottom:28px; }
+  .demo { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px; margin:8px 0 48px; }
+  .demo-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:18px; }
+  .demo-head .title { font-weight:700; font-size:17px; }
+  .demo-head .count { font-size:14px; font-weight:700; color:var(--accent); background:#eef2fd; border-radius:999px; padding:5px 12px; }
+  .demo-head .count.done { color:var(--good); background:var(--goodbg); }
+  .post { border:1px solid var(--line); border-radius:10px; padding:20px 22px; margin-bottom:18px; background:#fff; }
+  .post h2 { font-family:Georgia,"Times New Roman",serif; font-size:22px; margin-bottom:10px; }
+  .post h3, .post h4 { font-family:Georgia,"Times New Roman",serif; font-size:18px; margin:14px 0 6px; }
+  .post p { font-size:15px; color:var(--muted); margin-bottom:10px; }
+  .post p a { color:var(--accent); }
+  .post img { width:100%; height:auto; border-radius:8px; display:block; margin:6px 0 4px; }
+  .alt-caption { font-size:13px; color:var(--good); background:var(--goodbg); border-radius:6px; padding:8px 12px; margin-top:8px; }
+  .bad { background:#fdf0ef; border-radius:4px; padding:1px 5px; }
+  .issues { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; }
+  .issue { border:1px solid var(--line); border-radius:10px; padding:16px; }
+  .issue p { font-size:14px; margin-bottom:12px; min-height:42px; }
+  .issue .fix-btn { background:var(--accent); color:#fff; border:0; border-radius:6px; padding:9px 14px; font-size:14px; font-weight:600; cursor:pointer; width:100%; }
+  .issue .fix-btn:hover { background:#223da8; }
+  .issue.fixed { border-color:var(--good); background:var(--goodbg); }
+  .issue.fixed p { color:var(--good); }
+  .issue.fixed .fix-btn { background:var(--good); cursor:default; }
+  .done-msg { display:none; background:var(--goodbg); border:1px solid var(--good); border-radius:10px; padding:18px 20px; margin-top:16px; font-size:16px; }
+  .done-msg.show { display:block; }
+  .done-msg strong { color:var(--good); }
+  .demo-actions { margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; }
+  .link-btn { background:none; border:0; color:var(--muted); font-size:14px; cursor:pointer; padding:12px 0; text-decoration:underline; }
   .steps p { margin-bottom:18px; font-size:16px; max-width:640px; }
   .steps p strong { font-weight:700; }
   .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
@@ -53,7 +75,7 @@
   footer .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
   @media (max-width:760px) {
     .hero h1 { font-size:34px; }
-    .grid, .pricing { grid-template-columns:1fr; }
+    .grid, .pricing, .issues { grid-template-columns:1fr; }
     .btn-outline { margin-left:0; margin-top:10px; }
   }
 </style>
@@ -63,6 +85,7 @@
   <div class="wrap">
     <div class="logo"><img src="logo.webp" alt="SourceFix logo">SourceFix</div>
     <nav>
+      <a href="#demo">Try it</a>
       <a href="#how">How it works</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
@@ -75,15 +98,44 @@
     <h1>Every post you publish gets an accessibility check.</h1>
     <p>SourceFix scans a post or page when you publish it, writes the alt text, the link text, and the headings, and puts each fix in a queue for you to approve. Nothing changes on your site until you say so.</p>
     <a class="btn" href="https://wordpress.org/plugins/sourcefix/">Get SourceFix on WordPress.org</a>
-    <a class="btn btn-outline" href="#how">How it works</a>
+    <a class="btn btn-outline" href="#demo">Try it below</a>
   </div>
 
-  <div class="example">
-    <div class="label">A real example</div>
-    <p><strong>Your post has a photo with no alt text.</strong> A screen reader skips it, or reads out the file name. SourceFix looks at the image and proposes a description.</p>
-    <div class="fix"><strong>Proposed alt text:</strong> A developer at a desk, reviewing code on two monitors.</div>
-    <p style="margin-top:12px;">You approve it in one click. The fix is applied, logged, and dated on your statement page.</p>
-  </div>
+  <section id="demo" style="border-top:0; padding-top:0;">
+    <div class="demo">
+      <div class="demo-head">
+        <div class="title">Try it. This post has 3 problems. Fix them.</div>
+        <div class="count" id="issueCount">3 issues found</div>
+      </div>
+      <div class="post" id="demoPost">
+        <h2>Our new pricing</h2>
+        <img id="demoImg" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='640'%20height='320'%3E%3Crect%20width='640'%20height='320'%20fill='%23dbe4f0'/%3E%3Crect%20x='90'%20y='70'%20width='210'%20height='140'%20rx='10'%20fill='%232b4acb'/%3E%3Crect%20x='340'%20y='70'%20width='210'%20height='140'%20rx='10'%20fill='%237a93d6'/%3E%3Crect%20x='90'%20y='230'%20width='460'%20height='22'%20rx='11'%20fill='%239aa8bd'/%3E%3C/svg%3E" alt="">
+        <div class="alt-caption" id="altCaption" hidden></div>
+        <p>We have simplified our plans. If you want the details, <a href="#" id="demoLink" onclick="return false;">click here</a>.</p>
+        <h4 id="demoSub">What changes</h4>
+        <p>The Solo plan now covers one site, and Studio covers five. Nothing else changes.</p>
+      </div>
+      <div class="issues">
+        <div class="issue" id="issue-alt">
+          <p><strong>Image has no alt text.</strong> A screen reader skips it, or reads out the file name.</p>
+          <button class="fix-btn" onclick="fixAlt()">Fix it</button>
+        </div>
+        <div class="issue" id="issue-link">
+          <p><strong>Link text says &ldquo;click here&rdquo;.</strong> It says nothing about where it goes.</p>
+          <button class="fix-btn" onclick="fixLink()">Fix it</button>
+        </div>
+        <div class="issue" id="issue-heading">
+          <p><strong>Heading jumps from H2 to H4.</strong> A level is skipped, so the page reads out of order.</p>
+          <button class="fix-btn" onclick="fixHeading()">Fix it</button>
+        </div>
+      </div>
+      <div class="done-msg" id="doneMsg"><strong>All fixed.</strong> This post is ready to publish. On your real site, SourceFix does this the moment you hit publish, and each fix waits in your approval queue.</div>
+      <div class="demo-actions">
+        <button class="btn" onclick="fixAll()">Fix all three</button>
+        <button class="link-btn" onclick="resetDemo()">Run it again</button>
+      </div>
+    </div>
+  </section>
 
   <section id="how">
     <h2>How it works</h2>
@@ -172,5 +224,87 @@
     <div><a href="mailto:support@usesourcefix.com">support@usesourcefix.com</a></div>
   </div>
 </footer>
+
+<script>
+var state = { alt: false, link: false, heading: false };
+function remaining() {
+  return 3 - (state.alt + state.link + state.heading);
+}
+function updateCount() {
+  var n = remaining();
+  var el = document.getElementById('issueCount');
+  if (n === 0) {
+    el.textContent = 'All fixed';
+    el.classList.add('done');
+    document.getElementById('doneMsg').classList.add('show');
+  } else {
+    el.textContent = n + (n === 1 ? ' issue left' : ' issues left');
+  }
+}
+function markFixed(id) {
+  var el = document.getElementById(id);
+  el.classList.add('fixed');
+  var btn = el.querySelector('.fix-btn');
+  btn.textContent = 'Fixed';
+  btn.disabled = true;
+}
+function fixAlt() {
+  if (state.alt) return;
+  state.alt = true;
+  var img = document.getElementById('demoImg');
+  img.alt = 'A developer at a desk, reviewing code on two monitors.';
+  var cap = document.getElementById('altCaption');
+  cap.textContent = 'Alt text: ' + img.alt;
+  cap.hidden = false;
+  markFixed('issue-alt');
+  updateCount();
+}
+function fixLink() {
+  if (state.link) return;
+  state.link = true;
+  document.getElementById('demoLink').textContent = 'Read the pricing page';
+  markFixed('issue-link');
+  updateCount();
+}
+function fixHeading() {
+  if (state.heading) return;
+  state.heading = true;
+  var h4 = document.getElementById('demoSub');
+  var h3 = document.createElement('h3');
+  h3.id = 'demoSub';
+  h3.textContent = h4.textContent;
+  h4.replaceWith(h3);
+  markFixed('issue-heading');
+  updateCount();
+}
+function fixAll() {
+  fixAlt(); fixLink(); fixHeading();
+}
+function resetDemo() {
+  state = { alt: false, link: false, heading: false };
+  var img = document.getElementById('demoImg');
+  img.alt = '';
+  var cap = document.getElementById('altCaption');
+  cap.textContent = '';
+  cap.hidden = true;
+  document.getElementById('demoLink').textContent = 'click here';
+  var sub = document.getElementById('demoSub');
+  var h4 = document.createElement('h4');
+  h4.id = 'demoSub';
+  h4.textContent = sub.textContent;
+  sub.replaceWith(h4);
+  ['issue-alt', 'issue-link', 'issue-heading'].forEach(function (id) {
+    var el = document.getElementById(id);
+    el.classList.remove('fixed');
+    var btn = el.querySelector('.fix-btn');
+    btn.textContent = 'Fix it';
+    btn.disabled = false;
+  });
+  var el = document.getElementById('issueCount');
+  el.textContent = '3 issues found';
+  el.classList.remove('done');
+  document.getElementById('doneMsg').classList.remove('show');
+}
+</script>
 </body>
 </html>
