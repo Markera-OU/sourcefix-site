@@ -4,233 +4,171 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SourceFix — WordPress accessibility, fixed at publish time</title>
-<meta name="description" content="SourceFix uses AI to write alt text, link text, and headings for every new WordPress post and page. You review each fix, approve in one click, and publish a dated accessibility statement.">
+<meta name="description" content="SourceFix checks every WordPress post and page when you publish it, writes the alt text, link text, and headings, and lets you approve each fix before it goes live.">
 <style>
-  :root { --ink:#14213d; --muted:#5b6b82; --accent:#1d6ff2; --accent-dark:#1559c4; --bg:#f7f9fc; --card:#ffffff; --line:#e3e9f2; --good:#0f7b4d; }
+  :root { --ink:#1d2733; --muted:#5a6673; --accent:#2b4acb; --bg:#fbfaf7; --card:#ffffff; --line:#e5e1d8; }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.6; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; color:var(--ink); background:var(--bg); line-height:1.65; }
   a { color:var(--accent); text-decoration:none; }
   a:hover { text-decoration:underline; }
-  .wrap { max-width:1020px; margin:0 auto; padding:0 22px; }
-  header { background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10; }
-  header .wrap { display:flex; align-items:center; justify-content:space-between; height:60px; }
-  .logo { font-weight:800; font-size:20px; color:var(--ink); letter-spacing:-.02em; }
-  .logo span { color:var(--accent); }
-  nav a { margin-left:22px; color:var(--muted); font-size:15px; }
+  .wrap { max-width:860px; margin:0 auto; padding:0 24px; }
+  header { background:#fff; border-bottom:1px solid var(--line); }
+  header .wrap { display:flex; align-items:center; justify-content:space-between; height:58px; }
+  .logo { font-weight:800; font-size:19px; letter-spacing:-.02em; color:var(--ink); }
+  nav a { margin-left:22px; color:var(--muted); font-size:14px; }
   nav a:hover { color:var(--ink); }
-  .btn { display:inline-block; background:var(--accent); color:#fff; font-weight:600; padding:11px 22px; border-radius:8px; font-size:16px; }
-  .btn:hover { background:var(--accent-dark); text-decoration:none; }
-  .btn-ghost { background:#fff; color:var(--accent); border:1px solid var(--accent); }
-  .btn-ghost:hover { background:#eef4ff; }
-  .hero { text-align:center; padding:76px 22px 56px; }
-  .hero h1 { font-size:44px; line-height:1.15; letter-spacing:-.03em; max-width:760px; margin:0 auto 18px; }
-  .hero p { font-size:19px; color:var(--muted); max-width:640px; margin:0 auto 28px; }
-  .hero .cta-row { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .hero .note { margin-top:16px; font-size:14px; color:var(--muted); }
-  .badge { display:inline-block; background:#e7f0fe; color:var(--accent-dark); font-weight:600; font-size:13px; padding:5px 12px; border-radius:999px; margin-bottom:18px; }
-  section { padding:56px 0; }
-  section h2 { font-size:30px; letter-spacing:-.02em; text-align:center; margin-bottom:12px; }
-  section .sub { text-align:center; color:var(--muted); max-width:640px; margin:0 auto 36px; font-size:17px; }
-  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:26px; }
-  .card h3 { font-size:18px; margin-bottom:8px; }
-  .card p { color:var(--muted); font-size:15px; }
-  .num { display:inline-block; width:30px; height:30px; line-height:30px; text-align:center; border-radius:50%; background:var(--accent); color:#fff; font-weight:700; font-size:14px; margin-bottom:12px; }
-  .features { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
-  .features .card h3::before { content:"✓ "; color:var(--good); }
-  .pricing { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; align-items:stretch; }
-  .plan { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:26px; display:flex; flex-direction:column; }
-  .plan.pop { border:2px solid var(--accent); }
-  .plan h3 { font-size:19px; }
-  .plan .price { font-size:34px; font-weight:800; letter-spacing:-.02em; margin:10px 0 4px; }
-  .plan .per { color:var(--muted); font-size:14px; margin-bottom:16px; }
-  .plan ul { list-style:none; margin-bottom:20px; flex:1; }
-  .plan li { font-size:15px; color:var(--muted); padding:5px 0 5px 24px; position:relative; }
-  .plan li::before { content:"✓"; position:absolute; left:0; color:var(--good); font-weight:700; }
-  .plan .btn { text-align:center; }
-  .faq { max-width:720px; margin:0 auto; }
-  .faq details { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 22px; margin-bottom:12px; }
-  .faq summary { font-weight:600; cursor:pointer; font-size:16px; }
-  .faq p { color:var(--muted); margin-top:10px; font-size:15px; }
-  footer { border-top:1px solid var(--line); background:#fff; padding:34px 0; color:var(--muted); font-size:14px; }
-  footer .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:14px; }
-  @media (max-width:820px) {
-    .hero h1 { font-size:32px; }
-    .steps, .features, .pricing { grid-template-columns:1fr; }
+  .hero { padding:72px 0 48px; }
+  .hero h1 { font-family:Georgia,"Times New Roman",serif; font-size:46px; line-height:1.15; letter-spacing:-.01em; font-weight:700; max-width:640px; }
+  .hero p { font-size:18px; color:var(--muted); max-width:600px; margin:20px 0 28px; }
+  .btn { display:inline-block; background:var(--accent); color:#fff; font-weight:600; padding:12px 24px; border-radius:6px; font-size:16px; }
+  .btn:hover { background:#223da8; text-decoration:none; }
+  .btn-outline { background:transparent; color:var(--ink); border:1px solid #c9c4b8; margin-left:10px; }
+  .btn-outline:hover { background:#f0ede6; }
+  .example { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:22px 24px; margin:8px 0 48px; }
+  .example .label { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); font-weight:700; margin-bottom:10px; }
+  .example p { font-size:15px; color:var(--muted); }
+  .example p strong { color:var(--ink); }
+  .example .fix { background:#eef2fd; border-radius:6px; padding:12px 14px; margin-top:12px; font-size:15px; }
+  section { padding:40px 0; border-top:1px solid var(--line); }
+  section h2 { font-family:Georgia,"Times New Roman",serif; font-size:28px; letter-spacing:-.01em; margin-bottom:10px; }
+  section .intro { color:var(--muted); font-size:16px; max-width:620px; margin-bottom:28px; }
+  .steps p { margin-bottom:18px; font-size:16px; max-width:640px; }
+  .steps p strong { font-weight:700; }
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .item { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:22px; }
+  .item h3 { font-size:16px; margin-bottom:6px; }
+  .item p { color:var(--muted); font-size:15px; }
+  .pricing { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .plan { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:22px; }
+  .plan h3 { font-size:16px; }
+  .plan .price { font-size:30px; font-weight:800; letter-spacing:-.02em; margin:8px 0 2px; }
+  .plan .per { color:var(--muted); font-size:13px; margin-bottom:14px; }
+  .plan p { font-size:14px; color:var(--muted); }
+  .plan .btn { display:block; text-align:center; margin-top:16px; padding:10px; font-size:15px; }
+  .faq p { margin-bottom:22px; max-width:640px; font-size:16px; }
+  .faq p strong { display:block; margin-bottom:4px; }
+  .faq p span { color:var(--muted); }
+  footer { border-top:1px solid var(--line); padding:28px 0; color:var(--muted); font-size:14px; }
+  footer .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  @media (max-width:760px) {
+    .hero h1 { font-size:34px; }
+    .grid, .pricing { grid-template-columns:1fr; }
+    .btn-outline { margin-left:0; margin-top:10px; }
   }
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <div class="logo">Source<span>Fix</span></div>
+    <div class="logo">SourceFix</div>
     <nav>
       <a href="#how">How it works</a>
-      <a href="#features">Features</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
-      <a class="btn" href="#pricing" style="padding:8px 16px; margin-left:22px;">Get SourceFix</a>
     </nav>
   </div>
 </header>
 
-<div class="hero">
-  <div class="wrap">
-    <div class="badge">Free WordPress plugin</div>
-    <h1>WordPress accessibility, fixed at publish time</h1>
-    <p>SourceFix uses AI to write alt text, link text, and headings for every new post and page. You review each fix, approve it in one click, and publish a dated accessibility statement.</p>
-    <div class="cta-row">
-      <a class="btn" href="https://wordpress.org/plugins/sourcefix/">Get SourceFix on WordPress.org</a>
-      <a class="btn btn-ghost" href="#how">See how it works</a>
-    </div>
-    <p class="note">Free to install. No account needed to start. Upgrades are optional.</p>
+<div class="wrap">
+  <div class="hero">
+    <h1>Every post you publish gets an accessibility check.</h1>
+    <p>SourceFix scans a post or page when you publish it, writes the alt text, the link text, and the headings, and puts each fix in a queue for you to approve. Nothing changes on your site until you say so.</p>
+    <a class="btn" href="https://wordpress.org/plugins/sourcefix/">Get SourceFix on WordPress.org</a>
+    <a class="btn btn-outline" href="#how">How it works</a>
   </div>
-</div>
 
-<section id="how">
-  <div class="wrap">
+  <div class="example">
+    <div class="label">A real example</div>
+    <p><strong>Your post has a photo with no alt text.</strong> A screen reader skips it, or reads out the file name. SourceFix looks at the image and proposes a description.</p>
+    <div class="fix"><strong>Proposed alt text:</strong> A developer at a desk, reviewing code on two monitors.</div>
+    <p style="margin-top:12px;">You approve it in one click. The fix is applied, logged, and dated on your statement page.</p>
+  </div>
+
+  <section id="how">
     <h2>How it works</h2>
-    <p class="sub">Accessibility fixes happen where content is made, not in a separate audit months later.</p>
+    <p class="intro">It runs at publish time, inside WordPress. There is nothing to remember and no separate tool to open.</p>
     <div class="steps">
-      <div class="card">
-        <div class="num">1</div>
-        <h3>Publish as usual</h3>
-        <p>When you publish or update a post or page, SourceFix scans it for missing alt text, generic link text like “click here”, and heading problems such as skipped levels or missing headings.</p>
+      <p><strong>Publish a post.</strong> SourceFix scans it for missing alt text, vague link text, and heading problems.</p>
+      <p><strong>Review the fixes.</strong> Each proposal sits in an approval queue. You can edit the wording, approve it, or skip it.</p>
+      <p><strong>It is applied and logged.</strong> Approved fixes go live. Every fix is recorded with the date and who approved it, and your public statement page is updated.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What it fixes</h2>
+    <p class="intro">Three problems, the ones that show up on almost every WordPress site.</p>
+    <div class="grid">
+      <div class="item">
+        <h3>Alt text, written for you</h3>
+        <p>SourceFix looks at each image and writes a plain description of what it shows. Decorative images get an empty alt, so screen readers skip them.</p>
       </div>
-      <div class="card">
-        <div class="num">2</div>
-        <h3>Review AI-drafted fixes</h3>
-        <p>The AI drafts a fix for each issue using the surrounding content, and queues it for your review. Edit the wording if you like. Nothing changes on your site until you approve it.</p>
+      <div class="item">
+        <h3>Link text that says where it goes</h3>
+        <p>&ldquo;Click here&rdquo; becomes &ldquo;Read the pricing page&rdquo;. A link makes sense on its own, out of context.</p>
       </div>
-      <div class="card">
-        <div class="num">3</div>
-        <h3>Approve and publish proof</h3>
-        <p>Approve in one click. Low-risk fixes can apply automatically on paid plans. SourceFix re-publishes a dated public accessibility statement and keeps an audit log of every fix.</p>
+      <div class="item">
+        <h3>Headings in order</h3>
+        <p>SourceFix flags skipped levels and a missing H1, and suggests a clean order so the page reads top to bottom.</p>
+      </div>
+      <div class="item">
+        <h3>An approval queue</h3>
+        <p>Nothing changes on your site until you approve it. On paid plans, low risk fixes can apply themselves.</p>
+      </div>
+      <div class="item">
+        <h3>A public statement</h3>
+        <p>A page on your site lists what SourceFix does and what it has fixed, with dates. It is re-published whenever the fixes change.</p>
+      </div>
+      <div class="item">
+        <h3>An audit log</h3>
+        <p>Every fix, who approved it, and when. 30 days on the free plan, 12 months on paid plans.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section id="features" style="background:#fff; border-top:1px solid var(--line); border-bottom:1px solid var(--line);">
-  <div class="wrap">
-    <h2>What SourceFix fixes</h2>
-    <p class="sub">The common issues that make up the bulk of detectable accessibility failures on real sites.</p>
-    <div class="features">
-      <div class="card">
-        <h3>Alt text for images</h3>
-        <p>AI-written alt text based on the image and the surrounding copy. Decorative images are left with an empty alt, as they should be.</p>
-      </div>
-      <div class="card">
-        <h3>Descriptive link text</h3>
-        <p>Replaces “click here”, “read more”, and bare URLs with link text that says where the link goes.</p>
-      </div>
-      <div class="card">
-        <h3>Heading structure</h3>
-        <p>Fixes missing headings, multiple top-level headings, and skipped heading levels so the page outline reads correctly.</p>
-      </div>
-      <div class="card">
-        <h3>Approval queue</h3>
-        <p>Every AI fix waits for your approval. You stay in control of what changes on your site, and the queue is one click per fix.</p>
-      </div>
-      <div class="card">
-        <h3>Dated accessibility statement</h3>
-        <p>A public statement page, re-dated whenever fixes are applied, plus an audit log showing what was fixed and when.</p>
-      </div>
-      <div class="card">
-        <h3>Per-site memory</h3>
-        <p>On Studio and Agency plans, SourceFix learns your site’s terminology and voice, so drafts sound like you wrote them.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="pricing">
-  <div class="wrap">
+  <section id="pricing">
     <h2>Pricing</h2>
-    <p class="sub">Start free. Upgrade when the free tier runs out of fixes or you want fixes applied automatically.</p>
+    <p class="intro">Free for one site. Paid plans add more sites and auto-apply for low risk fixes.</p>
     <div class="pricing">
       <div class="plan">
         <h3>Free</h3>
         <div class="price">$0</div>
-        <div class="per">forever, 1 site</div>
-        <ul>
-          <li>Up to 50 AI fixes per month</li>
-          <li>Approval queue</li>
-          <li>Dated public accessibility statement (published once)</li>
-          <li>Audit log (30 days)</li>
-        </ul>
-        <a class="btn btn-ghost" href="https://wordpress.org/plugins/sourcefix/">Install free</a>
+        <div class="per">1 site, up to 50 AI fixes a month</div>
+        <p>Approval queue, statement published once, 30 day audit log.</p>
+        <a class="btn btn-outline" href="https://wordpress.org/plugins/sourcefix/">Install free</a>
       </div>
-      <div class="plan pop">
+      <div class="plan">
         <h3>Solo</h3>
         <div class="price">$79</div>
         <div class="per">per year, 1 site</div>
-        <ul>
-          <li>Unlimited AI-authored fixes</li>
-          <li>Auto-apply low-risk fixes</li>
-          <li>Statement re-published on every change</li>
-          <li>12-month audit log</li>
-        </ul>
+        <p>Unlimited authoring, auto-apply for low risk fixes, statement re-published on every change, 12 month log.</p>
         <a class="btn" href="https://wordpress.org/plugins/sourcefix/">Get Solo</a>
       </div>
       <div class="plan">
         <h3>Studio</h3>
         <div class="price">$149</div>
         <div class="per">per year, 5 sites</div>
-        <ul>
-          <li>Everything in Solo</li>
-          <li>Per-site terminology memory</li>
-        </ul>
-        <a class="btn btn-ghost" href="https://wordpress.org/plugins/sourcefix/">Get Studio</a>
-      </div>
-      <div class="plan">
-        <h3>Agency</h3>
-        <div class="price">$299</div>
-        <div class="per">per year, 25 sites</div>
-        <ul>
-          <li>Everything in Studio</li>
-          <li>Agency dashboard</li>
-          <li>Downloadable client reports</li>
-        </ul>
-        <a class="btn btn-ghost" href="https://wordpress.org/plugins/sourcefix/">Get Agency</a>
+        <p>Everything in Solo, plus per-site terminology memory so wording stays consistent across your sites.</p>
+        <a class="btn btn-outline" href="https://wordpress.org/plugins/sourcefix/">Get Studio</a>
       </div>
     </div>
-    <p class="sub" style="margin-top:26px; font-size:14px;">Prices in USD, billed yearly. Upgrades and payments are handled inside WordPress.</p>
-  </div>
-</section>
+    <p class="intro" style="margin-top:20px; font-size:14px;">Agency is $299 a year for 25 sites, with an agency dashboard and downloadable client reports. Prices in USD, billed yearly.</p>
+  </section>
 
-<section id="faq" style="background:#fff; border-top:1px solid var(--line);">
-  <div class="wrap">
-    <h2>Frequently asked questions</h2>
+  <section id="faq">
+    <h2>Questions</h2>
     <div class="faq">
-      <details>
-        <summary>Does SourceFix make my site compliant?</summary>
-        <p>No. SourceFix finds and fixes common accessibility issues, but compliance depends on your whole site, your theme, and your content. We never claim a site is compliant, and the public statement says so plainly.</p>
-      </details>
-      <details>
-        <summary>Does the AI change my content without asking?</summary>
-        <p>No. Every fix waits in the approval queue. On the free plan, all fixes wait. On paid plans, only low-risk fixes can apply automatically, and you can turn that off.</p>
-      </details>
-      <details>
-        <summary>What does SourceFix send to the AI?</summary>
-        <p>Only the text around an issue, so the AI can draft a fitting fix. No user data, no visitor data, and no whole-site exports.</p>
-      </details>
-      <details>
-        <summary>Which WordPress versions are supported?</summary>
-        <p>WordPress 6.0 and later, PHP 7.4 and later.</p>
-      </details>
-      <details>
-        <summary>What is the accessibility statement?</summary>
-        <p>A public page on your site that lists what SourceFix has fixed and when it was last updated. It is a record of work done, not a claim of compliance.</p>
-      </details>
+      <p><strong>Does SourceFix make my site compliant?</strong><span>No. It fixes specific issues: alt text, link text, headings. Compliance is a legal question, and SourceFix does not claim it.</span></p>
+      <p><strong>What does it check?</strong><span>Alt text on images, the wording of links, and the order of headings. That is all it does, and it does it at publish time.</span></p>
+      <p><strong>Do I have to approve every fix?</strong><span>On the free plan, yes. Paid plans can auto-apply low risk fixes. You can turn that off.</span></p>
+      <p><strong>What WordPress versions does it need?</strong><span>WordPress 6.0 or newer, PHP 7.4 or newer.</span></p>
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <footer>
   <div class="wrap">
     <div>SourceFix is a product of Markera OÜ, Tallinn, Estonia.</div>
-    <div>Questions? <a href="mailto:support@usesourcefix.com">support@usesourcefix.com</a></div>
+    <div><a href="mailto:support@usesourcefix.com">support@usesourcefix.com</a></div>
   </div>
 </footer>
 </body>
