@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy &mdash; SourceFix</title>
+<meta name="description" content="What SourceFix sends to its AI authoring service, what the service stores, and what stays on your own WordPress site.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#faf7f2; --ink:#1a1a1a; --muted:#5c564e; --line:#e5e1d8;
+    --blue:#2563eb; --red:#e5484d; --green:#0d7a4a; --card:#ffffff;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { font-family:"Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; color:var(--ink); background:var(--paper); line-height:1.6; font-size:17px; }
+  a { color:var(--blue); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .wrap { max-width:1080px; margin:0 auto; padding:0 28px; }
+  h1, h2, h3, .serif { font-family:"Roboto Slab", Georgia, "Times New Roman", serif; font-weight:700; letter-spacing:-0.02em; line-height:1.05; }
+  /* Header */
+  header.site { position:sticky; top:0; z-index:20; background:var(--paper); border-bottom:1px solid var(--line); }
+  header.site .wrap { display:flex; align-items:center; justify-content:space-between; height:64px; gap:16px; }
+  .brand { display:flex; align-items:center; gap:10px; font-weight:700; font-size:18px; color:var(--ink); letter-spacing:-0.01em; }
+  .brand img { height:32px; width:32px; border-radius:8px; display:block; }
+  .brand:hover { text-decoration:none; }
+  nav.main { display:flex; gap:24px; }
+  nav.main a { color:var(--muted); font-size:15px; font-weight:600; }
+  nav.main a:hover { color:var(--ink); text-decoration:none; }
+  .btn { display:inline-block; background:var(--blue); color:#fff; font-weight:700; padding:13px 24px; border-radius:10px; font-size:16px; border:0; cursor:pointer; font-family:inherit; }
+  .btn:hover { background:#1d4ed8; text-decoration:none; }
+  .btn.small { padding:9px 18px; font-size:15px; }
+  .btn-ghost { background:transparent; color:var(--ink); border:1px solid #c9c2b8; }
+  .btn-ghost:hover { background:#f0ece5; }
+  .btn:disabled { background:#9aa3b2; cursor:default; }
+  /* Sections */
+  section { padding:88px 0; }
+  .kicker { color:var(--blue); font-size:13px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:20px; }
+  h1 { font-size:clamp(2.8rem, 7vw, 5rem); max-width:900px; }
+  h2 { font-size:clamp(2rem, 4vw, 3rem); margin-bottom:14px; }
+  .hero { padding:96px 0 72px; }
+  .hero-img { display:block; width:100%; max-width:880px; margin:48px auto 0; border-radius:16px; border:1px solid var(--line); }
+  .hero p.lede { font-size:19px; color:var(--muted); max-width:620px; margin:26px 0 32px; }
+  .cta-row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+  /* Demo */
+  .demo-card { background:var(--card); border:1px solid var(--line); border-radius:16px; padding:36px; box-shadow:0 12px 40px rgba(26,26,26,0.06); }
+  .demo-head { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap; margin-bottom:24px; }
+  .demo-head h3 { font-size:26px; }
+  .demo-head .demo-sub { color:var(--muted); font-size:15px; margin-top:6px; }
+  .counter { font-family:"Roboto Slab", Georgia, serif; font-weight:700; font-size:20px; color:var(--red); background:#fdf0f0; border:1px solid #f5c6c8; border-radius:999px; padding:8px 18px; white-space:nowrap; }
+  .counter.done { color:var(--green); background:#eaf5ee; border-color:#bfe3cd; }
+  .post { border-top:1px solid var(--line); padding-top:24px; }
+  .post-title { font-size:24px; margin-bottom:18px; }
+  .problem { border:2px dashed var(--red); border-radius:12px; padding:18px 20px; margin-bottom:18px; transition:border-color .25s ease, background .25s ease; }
+  .problem.fixed { border:2px solid var(--green); background:#f4faf6; }
+  .problem-label { font-size:12px; font-weight:700; letter-spacing:0.14em; text-transform:uppercase; color:var(--red); margin-bottom:10px; }
+  .problem-label.done { color:var(--green); }
+  .problem img { width:100%; height:auto; display:block; border-radius:8px; }
+  .alt-line { margin-top:10px; font-size:14px; color:var(--green); font-weight:600; }
+  .problem p { font-size:16px; }
+  .problem h2.post-h2 { font-size:22px; margin-bottom:8px; }
+  .problem h3.post-h3, .problem h4.post-h4 { margin-bottom:4px; }
+  .problem h3.post-h3 { font-size:19px; }
+  .problem h4.post-h4 { font-size:16px; }
+  .fix-btn { margin-top:12px; background:var(--red); color:#fff; border:0; border-radius:8px; padding:9px 18px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; }
+  .fix-btn:hover { background:#c93a3f; }
+  .fix-btn:disabled { background:#9aa3b2; cursor:default; }
+  .demo-actions { margin-top:22px; display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
+  .link-btn { background:none; border:0; color:var(--muted); font-size:15px; cursor:pointer; padding:12px 0; text-decoration:underline; font-family:inherit; }
+  /* Vertical list (what it fixes / how it works) */
+  .vlist { border-top:1px solid var(--line); }
+  .vlist-item { display:flex; gap:28px; padding:32px 0; border-bottom:1px solid var(--line); align-items:flex-start; }
+  .vlist-item .num { font-family:"Roboto Slab", Georgia, serif; font-weight:700; font-size:44px; line-height:1; color:var(--blue); min-width:72px; }
+  .vlist-item h3 { font-size:24px; margin-bottom:6px; }
+  .vlist-item p { color:var(--muted); font-size:17px; max-width:640px; }
+  /* Before and after */
+  .ba-row { display:grid; grid-template-columns:1fr 1fr; gap:32px; margin-top:8px; }
+  .ba-cell { border-top:3px solid var(--line); padding-top:24px; }
+  .ba-cell.before { border-top-color:var(--red); }
+  .ba-cell.after { border-top-color:var(--green); }
+  .ba-cell .tag { font-size:12px; font-weight:700; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:12px; }
+  .ba-cell.before .tag { color:var(--red); }
+  .ba-cell.after .tag { color:var(--green); }
+  .ba-cell .big { font-family:"Roboto Slab", Georgia, serif; font-weight:700; font-size:clamp(2.2rem, 5vw, 3.4rem); letter-spacing:-0.02em; line-height:1.05; }
+  .ba-cell p { color:var(--muted); margin-top:12px; font-size:16px; max-width:380px; }
+  /* Pricing */
+  .pricing { display:grid; grid-template-columns:repeat(4, 1fr); gap:16px; margin-top:8px; }
+  .plan { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:26px 22px; display:flex; flex-direction:column; }
+  .plan.hot { border-color:var(--blue); border-width:2px; position:relative; }
+  .plan.hot .tag { position:absolute; top:-12px; left:20px; background:var(--blue); color:#fff; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; padding:4px 10px; border-radius:999px; }
+  .plan h3 { font-size:18px; }
+  .plan .price { font-family:"Roboto Slab", Georgia, serif; font-weight:700; font-size:38px; letter-spacing:-0.02em; margin:12px 0 2px; }
+  .plan .per { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  .plan p { font-size:14px; color:var(--muted); flex:1; }
+  .plan .btn { display:block; text-align:center; margin-top:18px; padding:11px; font-size:15px; }
+  /* FAQ */
+  .faq-item { border-top:1px solid var(--line); padding:26px 0; max-width:720px; }
+  .faq-item:last-child { border-bottom:1px solid var(--line); }
+  .faq-item h3 { font-size:20px; margin-bottom:8px; }
+  .faq-item p { color:var(--muted); font-size:16px; }
+  /* Footer */
+  footer.site { border-top:1px solid var(--line); padding:36px 0 44px; color:var(--muted); font-size:15px; }
+  footer.site .wrap { display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px; }
+  footer.site a { color:var(--muted); }
+  @media (max-width: 900px) {
+    .pricing { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 820px) {
+    section { padding:64px 0; }
+    .hero { padding:64px 0 48px; }
+    nav.main { display:none; }
+    .ba-row { grid-template-columns:1fr; }
+    .pricing { grid-template-columns:1fr; }
+    .demo-card { padding:24px 20px; }
+    .vlist-item { gap:18px; }
+    .vlist-item .num { font-size:34px; min-width:56px; }
+  }
+
+  .policy { max-width:720px; }
+  .policy h2 { font-size:clamp(1.6rem, 3vw, 2.2rem); margin:36px 0 10px; }
+  .policy h2:first-child { margin-top:0; }
+  .policy p { color:var(--muted); margin-bottom:14px; }
+  .policy p strong { color:var(--ink); }
+  .policy ul { color:var(--muted); margin:0 0 14px 22px; }
+  .policy li { margin-bottom:6px; }
+  .policy .updated { font-size:14px; color:var(--muted); }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="logo.webp" alt="SourceFix logo">SourceFix</a>
+    <nav class="main">
+      <a href="/#demo">Try it</a>
+      <a href="/#fixes">What it fixes</a>
+      <a href="/#how">How it works</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#faq">FAQ</a>
+    </nav>
+    <a class="btn small" href="https://usesourcefix.com/sourcefix-v0.2.2.zip">Get SourceFix</a>
+  </div>
+</header>
+<main>
+  <section class="hero" style="padding-bottom:48px;">
+    <div class="wrap policy">
+      <div class="kicker">Privacy Policy</div>
+      <h1>What SourceFix<br>does with data.</h1>
+      <p class="lede">This page describes, plainly, what SourceFix sends, stores, and keeps on your own site. It is not a statement of compliance with any law or standard.</p>
+      <p class="updated">Effective 11 November 2026. SourceFix is a product of Markera O&Uuml;, Sepapaja tn 6, Tallinn 15551, Estonia. Markera O&Uuml; is the data controller for the service described below. Questions about this policy: <a href="mailto:support@usesourcefix.com">support@usesourcefix.com</a>.</p>
+
+      <h2>What the plugin sends</h2>
+      <p>When SourceFix authors a fix, it sends the text around an image and the list of headings on the page to its AI authoring service, hosted at backend-production-2abf.up.railway.app. That service forwards them to <strong>DeepSeek</strong>, the AI provider, so the service can write alt text and correct heading structure.</p>
+      <p>On Studio and Agency plans, your site&rsquo;s terminology list is sent with the request, so the AI writes in your site&rsquo;s own words. <strong>No other content is sent.</strong></p>
+
+      <h2>What the service stores</h2>
+      <p>Only three things: your site&rsquo;s address, its plan, and how many AI fixes it has used this month (to enforce the Free plan&rsquo;s 50-fix monthly cap). It stores <strong>no post content and no fix history</strong>.</p>
+
+      <h2>What stays on your site</h2>
+      <p>Your approval history (which fixes were approved or rejected), your audit log, and your terminology list are stored only on your own site, in its WordPress database. They are never sent to the authoring service.</p>
+
+      <h2>Payments and licensing</h2>
+      <p>Paid plans are sold and licensed through <a href="https://freemius.com/">Freemius</a>. SourceFix does not process or store your payment details; payment processing is handled by Freemius, and Freemius&rsquo;s own privacy policy governs what it collects when you buy or manage a license.</p>
+
+      <h2>This website</h2>
+      <p>usesourcefix.com sets no tracking cookies and runs no analytics. The site loads its fonts from Google Fonts, so your browser makes a request to Google when a page loads; Google may receive your IP address and browser details as part of that request.</p>
+
+      <h2>Retention</h2>
+      <p>Usage counts are kept per month, for as long as needed to enforce the monthly cap. No post content is stored at all, so there is nothing to delete on that side. Approval history, audit logs, and terminology live in your own WordPress database and are yours to delete from your site at any time.</p>
+
+      <h2>Your rights</h2>
+      <p>You can ask us to show you the data the authoring service holds about your site, correct it, or delete it. You can also ask for a copy of it, or object to how it is used. Write to <a href="mailto:support@usesourcefix.com">support@usesourcefix.com</a> and we will answer.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If this policy changes, the effective date above will change with it, and the current version will always be the one on this page.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div>SourceFix is a product of Markera OÜ, Tallinn, Estonia.</div>
+    <div><a href="/privacy-policy">Privacy Policy</a> &middot; <a href="mailto:support@usesourcefix.com">support@usesourcefix.com</a></div>
+  </div>
+</footer>
+</body>
+</html>
